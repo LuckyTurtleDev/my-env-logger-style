@@ -13,6 +13,7 @@ static SHOW_EMOJIS: AtomicBool = AtomicBool::new(true);
 ///create and regstier a logger from the default environment variables
 pub fn just_log() {
 	env_logger::Builder::new()
+		.filter_level(log::LevelFilter::Info) //set defaul log level
 		.parse_default_env()
 		.format(format)
 		.init();
@@ -62,7 +63,7 @@ pub fn format(buf: &mut Formatter, record: &Record) -> io::Result<()> {
 
 	writeln!(
 		buf,
-		"{level_symbol} {:6} {:module_len$}{}{}",
+		"{level_symbol} {:5} {:module_len$}{}{}",
 		level_style.value(record.level()),
 		module_style.value(module),
 		bold.value(mod_separator),
