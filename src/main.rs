@@ -6,6 +6,7 @@ fn main() {
 		.parse_default_env()
 		.filter_level(log::LevelFilter::Trace)
 		.format(format)
+		.format_timestamp_secs()
 		.init();
 	print_logs();
 	foo::print_logs();

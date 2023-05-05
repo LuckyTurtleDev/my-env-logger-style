@@ -3,12 +3,24 @@ use log::{Level, Record};
 use std::{
 	io,
 	io::Write,
-	sync::atomic::{AtomicBool, AtomicUsize, Ordering}
+	sync::atomic::{AtomicBool, AtomicU8, AtomicUsize, Ordering},
+	time::SystemTime
 };
 
 static MAX_MODULE_LEN: AtomicUsize = AtomicUsize::new(0);
 static SHOW_MODULE: AtomicBool = AtomicBool::new(true);
 static SHOW_EMOJIS: AtomicBool = AtomicBool::new(true);
+static SHOW_TIME: AtomicU8 = AtomicU8::new(TimestampPrecision::Seconds as u8);
+
+#[repr(u8)]
+/// RFC3339 timestamps
+pub enum TimestampPrecision {
+	Disable,
+	Seconds,
+	Millis,
+	Micros,
+	Nanos
+}
 
 ///create and regstier a logger from the default environment variables
 pub fn just_log() {
@@ -29,10 +41,37 @@ pub fn show_emoji(show: bool) {
 	SHOW_EMOJIS.store(show, Ordering::Relaxed);
 }
 
+pub fn set_timestamp_precision(timestamp_precission: TimestampPrecision) {
+	SHOW_TIME.store(timestamp_precission as u8, Ordering::Relaxed);
+}
+
 ///log formater witch can be used at the [`format()`](env_logger::Builder::format()) function of the [`env_logger::Builder`].
 pub fn format(buf: &mut Formatter, record: &Record) -> io::Result<()> {
 	let mut bold = buf.style();
 	bold.set_bold(true);
+	let mut dimmed = buf.style();
+	dimmed.set_dimmed(true);
+
+	{
+		let show_time = SHOW_TIME.load(Ordering::Relaxed);
+		// safety: SHOW_TIME is inilized with TimestampPrecision::Seconds
+		// and can only be written by using set_timestamp_precision()
+		match unsafe { std::mem::transmute(show_time) } {
+			TimestampPrecision::Disable => Ok(()),
+			TimestampPrecision::Seconds => {
+				write!(buf, "{} ", dimmed.value(buf.timestamp_seconds()))
+			},
+			TimestampPrecision::Millis => {
+				write!(buf, "{} ", dimmed.value(buf.timestamp_seconds()))
+			},
+			TimestampPrecision::Micros => {
+				write!(buf, "{} ", dimmed.value(buf.timestamp_seconds()))
+			},
+			TimestampPrecision::Nanos => {
+				write!(buf, "{} ", dimmed.value(buf.timestamp_seconds()))
+			}
+		}?;
+	}
 
 	let level_style = buf.default_level_style(record.level());
 	let level_symbol = if SHOW_EMOJIS.load(Ordering::Relaxed) {
@@ -47,26 +86,21 @@ pub fn format(buf: &mut Formatter, record: &Record) -> io::Result<()> {
 	} else {
 		""
 	};
-
-	let mut module_style = buf.style();
-	module_style.set_dimmed(true); //grey
-	let module = if SHOW_MODULE.load(Ordering::Relaxed) {
-		record.module_path().unwrap_or_default()
-	} else {
-		""
-	};
-	let module_len = MAX_MODULE_LEN.load(Ordering::Relaxed);
-	if module_len < module.len() {
-		MAX_MODULE_LEN.store(module.len(), Ordering::Relaxed);
-	}
-	let mod_separator = if !module.is_empty() { " > " } else { "" };
-
-	writeln!(
+	write!(
 		buf,
-		"{level_symbol} {:5} {:module_len$}{}{}",
-		level_style.value(record.level()),
-		module_style.value(module),
-		bold.value(mod_separator),
-		record.args()
-	)
+		"{level_symbol} {:5} ",
+		level_style.value(record.level())
+	)?;
+
+	if SHOW_MODULE.load(Ordering::Relaxed) {
+		let module = record.module_path().unwrap_or_default();
+
+		let module_len = MAX_MODULE_LEN.load(Ordering::Relaxed);
+		if module_len < module.len() {
+			MAX_MODULE_LEN.store(module.len(), Ordering::Relaxed);
+		}
+		write!(buf, "{:module_len$} > ", dimmed.value(module))?;
+	}
+
+	writeln!(buf, "{}", record.args())
 }
