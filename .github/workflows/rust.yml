@@ -55,6 +55,6 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
       - uses: msrd0/cargo-publish-action@v1
         with: 
-          packages: crab-hole
+          packages: my-env-logger-style 
         env:
           CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
