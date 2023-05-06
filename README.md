@@ -4,6 +4,16 @@ A pretty, opinionated style for [env_logger][__link0] inspirated by [pretty-env-
 
 It is not a goal of this crate to create a feature rich wrapper around [env_logger][__link2]. Instead it does provide a formater, which can be applied to the [`env_logger::Builder`][__link3]. Additional an optional [function][__link4] to create and register a zero config logger is provided.
 
+Preview:
+
+![image](https://user-images.githubusercontent.com/44570204/236641121-5071e42a-9f9b-4bff-a6fb-03ff294f5d9e.png)
+
+with tiemstamps:
+
+![image](https://user-images.githubusercontent.com/44570204/236641172-fb304d1f-7e50-4283-969e-949a76b0ba00.png)
+
+
+
 
 ## Usage
 
