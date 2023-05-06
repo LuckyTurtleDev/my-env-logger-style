@@ -50,6 +50,7 @@ use std::{
 static MAX_MODULE_LEN: AtomicUsize = AtomicUsize::new(0);
 static SHOW_MODULE: AtomicBool = AtomicBool::new(true);
 static SHOW_EMOJIS: AtomicBool = AtomicBool::new(true);
+#[cfg(feature = "time")]
 static SHOW_TIME: AtomicU8 = AtomicU8::new(TimestampPrecision::Seconds as u8);
 
 pub use env_logger;
@@ -94,6 +95,7 @@ pub fn get_set_max_module_len(len: usize) -> usize {
 	module_len
 }
 
+#[cfg(feature = "time")]
 /// set the timestamp precision or disable timestamps complete
 pub fn set_timestamp_precision(timestamp_precission: TimestampPrecision) {
 	SHOW_TIME.store(timestamp_precission as u8, Ordering::Relaxed);
@@ -106,6 +108,7 @@ pub fn format(buf: &mut Formatter, record: &Record) -> io::Result<()> {
 	let mut dimmed = buf.style();
 	dimmed.set_dimmed(true);
 
+	#[cfg(feature = "time")]
 	{
 		let show_time = SHOW_TIME.load(Ordering::Relaxed);
 		// safety: SHOW_TIME is inilized with TimestampPrecision::Seconds
