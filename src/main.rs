@@ -15,7 +15,7 @@ fn main() {
 
 fn print_logs() {
 	info!("Hello, world!");
-	trace!("traceeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+	trace!("traceeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
 	debug!("bugs everywhere");
 	warn!("This looks strange");
 	error!("Something went wrong")

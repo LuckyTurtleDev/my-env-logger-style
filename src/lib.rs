@@ -3,8 +3,7 @@ use log::{Level, Record};
 use std::{
 	io,
 	io::Write,
-	sync::atomic::{AtomicBool, AtomicU8, AtomicUsize, Ordering},
-	time::SystemTime
+	sync::atomic::{AtomicBool, AtomicU8, AtomicUsize, Ordering}
 };
 
 static MAX_MODULE_LEN: AtomicUsize = AtomicUsize::new(0);
@@ -41,6 +40,18 @@ pub fn show_emoji(show: bool) {
 	SHOW_EMOJIS.store(show, Ordering::Relaxed);
 }
 
+/// return the current module len.
+///
+/// And set the module length to the maximum of the current value and the given `len`
+pub fn get_set_max_module_len(len: usize) -> usize {
+	let module_len = MAX_MODULE_LEN.load(Ordering::Relaxed);
+	if module_len < len {
+		MAX_MODULE_LEN.store(len, Ordering::Relaxed);
+	}
+	module_len
+}
+
+/// set thi timestamp precision or disable timestamps complete
 pub fn set_timestamp_precision(timestamp_precission: TimestampPrecision) {
 	SHOW_TIME.store(timestamp_precission as u8, Ordering::Relaxed);
 }
@@ -94,11 +105,7 @@ pub fn format(buf: &mut Formatter, record: &Record) -> io::Result<()> {
 
 	if SHOW_MODULE.load(Ordering::Relaxed) {
 		let module = record.module_path().unwrap_or_default();
-
-		let module_len = MAX_MODULE_LEN.load(Ordering::Relaxed);
-		if module_len < module.len() {
-			MAX_MODULE_LEN.store(module.len(), Ordering::Relaxed);
-		}
+		let module_len = get_set_max_module_len(module.len());
 		write!(buf, "{:module_len$} > ", dimmed.value(module))?;
 	}
 
