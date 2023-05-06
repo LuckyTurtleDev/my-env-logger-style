@@ -106,7 +106,12 @@ pub fn format(buf: &mut Formatter, record: &Record) -> io::Result<()> {
 	if SHOW_MODULE.load(Ordering::Relaxed) {
 		let module = record.module_path().unwrap_or_default();
 		let module_len = get_set_max_module_len(module.len());
-		write!(buf, "{:module_len$} > ", dimmed.value(module))?;
+		write!(
+			buf,
+			"{:module_len$} {} ",
+			dimmed.value(module),
+			bold.value('>')
+		)?;
 	}
 
 	writeln!(buf, "{}", record.args())
