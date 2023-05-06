@@ -39,13 +39,11 @@ You can also create an [`env_logger::Builder`][__link7] and apply the style defi
 use log::info;
 use my_env_logger_style::format;
 
-fn main() {
-	env_logger::Builder::new()
-		.parse_default_env()
-		.format(format)
-		.init();
-	info!("Hello, world!");
-}
+env_logger::Builder::new()
+	.parse_default_env()
+	.format(format)
+	.init();
+info!("Hello, world!");
 ```
 
 
@@ -57,7 +55,7 @@ fn main() {
 RFC3339 timestamps
 
 
- [__cargo_doc2readme_dependencies_info]: ggGkYW0BYXSEGyDwipHVMb5RGxgd3zutc1TvG3ARKV4UcQ1NGyM1aXabIPYbYXKEGxQa2zXWn2GfG-ZnDzslQ1PlG2hQpdvIzcCLGyfY7kjnZ59KYWSCgmplbnZfbG9nZ2VyZjAuMTAuMINzbXktZW52LWxvZ2dlci1zdHlsZWUwLjEuMHNteV9lbnZfbG9nZ2VyX3N0eWxl
+ [__cargo_doc2readme_dependencies_info]: ggGkYW0BYXSEGyDwipHVMb5RGxgd3zutc1TvG3ARKV4UcQ1NGyM1aXabIPYbYXKEG7EFv_7UCGLAG6p_0yQ4EO5pG2oTs9qOJvabG93PJiAv3uw6YWSCgmplbnZfbG9nZ2VyZjAuMTAuMINzbXktZW52LWxvZ2dlci1zdHlsZWUwLjEuMHNteV9lbnZfbG9nZ2VyX3N0eWxl
  [__link0]: https://crates.io/crates/env_logger
  [__link1]: https://crates.io/crates/pretty_env_logger
  [__link2]: https://crates.io/crates/env_logger

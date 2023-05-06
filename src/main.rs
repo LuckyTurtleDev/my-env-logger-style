@@ -1,3 +1,6 @@
+#![warn(rust_2018_idioms, unreachable_pub)]
+#![forbid(elided_lifetimes_in_paths, unsafe_code)]
+
 use log::*;
 use my_env_logger_style::format;
 
@@ -23,7 +26,7 @@ fn print_logs() {
 
 mod foo {
 	use super::*;
-	pub fn print_logs() {
+	pub(crate) fn print_logs() {
 		info!("Hello, from mod");
 	}
 }

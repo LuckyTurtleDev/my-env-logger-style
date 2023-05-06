@@ -1,3 +1,8 @@
+#![allow(clippy::tabs_in_doc_comments)]
+#![warn(rust_2018_idioms, unreachable_pub)]
+#![forbid(elided_lifetimes_in_paths)]
+#![cfg_attr(all(doc, nightly), feature(doc_auto_cfg))]
+
 //! A pretty, opinionated style for [env_logger](https://crates.io/crates/env_logger) inspirated by [pretty-env-logger](https://crates.io/crates/pretty_env_logger).
 //!
 //! It is not a goal of this crate to create a feature rich wrapper around [env_logger](https://crates.io/crates/env_logger).
@@ -28,13 +33,11 @@
 //! use log::info;
 //! use my_env_logger_style::format;
 //!
-//! fn main() {
-//! 	env_logger::Builder::new()
-//! 		.parse_default_env()
-//! 		.format(format)
-//! 		.init();
-//! 	info!("Hello, world!");
-//! }
+//! env_logger::Builder::new()
+//! 	.parse_default_env()
+//! 	.format(format)
+//! 	.init();
+//! info!("Hello, world!");
 //! ```
 //! # Feature-flags
 //! #### time (default)
@@ -102,7 +105,7 @@ pub fn set_timestamp_precision(timestamp_precission: TimestampPrecision) {
 }
 
 ///log formater witch can be used at the [`format()`](env_logger::Builder::format()) function of the [`env_logger::Builder`].
-pub fn format(buf: &mut Formatter, record: &Record) -> io::Result<()> {
+pub fn format(buf: &mut Formatter, record: &Record<'_>) -> io::Result<()> {
 	let mut bold = buf.style();
 	bold.set_bold(true);
 	let mut dimmed = buf.style();

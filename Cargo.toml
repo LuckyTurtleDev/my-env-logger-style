@@ -10,3 +10,7 @@ time = ["env_logger/humantime"]
 [dependencies]
 env_logger = { version = "0.10.0", default-features = false, features = ["auto-color"] }
 log = "0.4.17"
+
+
+[build-dependencies]
+rustc_version = "0.4.0"
