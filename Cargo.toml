@@ -2,6 +2,18 @@
 name = "my-env-logger-style"
 version = "0.1.0"
 edition = "2021"
+description = "pretty, opinionated style for env_logger"
+repository = "https://github.com/LuckyTurtleDev/my-env-logger-style"
+categories = ["development-tools::debugging"]
+keywords = ["logging", "log", "logger"]
+license = "MIT OR Apache-2.0"
+include = [
+  "build.rs",
+  "src/**/*",
+  "Cargo.toml",
+  "LICENSE*",
+  "README.md"
+]
 
 [features]
 default = ["time"]
@@ -10,7 +22,6 @@ time = ["env_logger/humantime"]
 [dependencies]
 env_logger = { version = "0.10.0", default-features = false, features = ["auto-color"] }
 log = "0.4.17"
-
 
 [build-dependencies]
 rustc_version = "0.4.0"
