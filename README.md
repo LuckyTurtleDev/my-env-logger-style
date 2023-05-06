@@ -57,7 +57,7 @@ fn main() {
 RFC3339 timestamps
 
 
- [__cargo_doc2readme_dependencies_info]: ggGkYW0BYXSEGyDwipHVMb5RGxgd3zutc1TvG3ARKV4UcQ1NGyM1aXabIPYbYXKEG5wxpMw3YBdqG3vkPye1YVWGGyVcRnGI-YvPG4cyE37X57HtYWSCgmplbnZfbG9nZ2VyZjAuMTAuMINzbXktZW52LWxvZ2dlci1zdHlsZWUwLjEuMHNteV9lbnZfbG9nZ2VyX3N0eWxl
+ [__cargo_doc2readme_dependencies_info]: ggGkYW0BYXSEGyDwipHVMb5RGxgd3zutc1TvG3ARKV4UcQ1NGyM1aXabIPYbYXKEGxQa2zXWn2GfG-ZnDzslQ1PlG2hQpdvIzcCLGyfY7kjnZ59KYWSCgmplbnZfbG9nZ2VyZjAuMTAuMINzbXktZW52LWxvZ2dlci1zdHlsZWUwLjEuMHNteV9lbnZfbG9nZ2VyX3N0eWxl
  [__link0]: https://crates.io/crates/env_logger
  [__link1]: https://crates.io/crates/pretty_env_logger
  [__link2]: https://crates.io/crates/env_logger
