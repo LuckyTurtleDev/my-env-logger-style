@@ -16,6 +16,7 @@
 //! # Usage
 //! #### Quickstart
 //! ```
+//! # use log::info;
 //! my_env_logger_style::just_log();
 //! info!("Hello, world!");
 //! ```
