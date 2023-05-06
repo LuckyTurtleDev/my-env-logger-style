@@ -7,11 +7,11 @@
 //! Timestamp, emojis and modules can be disable separately.
 //!
 //! # Preview
-//! 
+//!
 //! ![image](https://user-images.githubusercontent.com/44570204/236641121-5071e42a-9f9b-4bff-a6fb-03ff294f5d9e.png)
-//! 
+//!
 //! with timestamps:
-//! 
+//!
 //! ![image](https://user-images.githubusercontent.com/44570204/236641172-fb304d1f-7e50-4283-969e-949a76b0ba00.png)
 //! # Usage
 //! #### Quickstart
