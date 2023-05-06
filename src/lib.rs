@@ -1,3 +1,34 @@
+//! A pretty, opinionated style for [env_logger](https://crates.io/crates/env_logger) inspirated by [pretty-env-logger](https://crates.io/crates/pretty_env_logger).
+//!
+//! It is not a goal of this crate to create a feature rich wrapper around [env_logger](https://crates.io/crates/env_logger).
+//! Instead it does provide a formater, which can be applied to the [`env_logger::Builder`].
+//! Additional an optional [function](just_log) to create and register a zero config logger is provided.
+//!
+//! # Usage
+//! #### Quickstart
+//! ```
+//! my_env_logger_style::just_log();
+//! info!("Hello, world!");
+//! ```
+//! This creates the default env_logger from environment variables and register it as logger.
+//! #### Advance
+//! You can also create an [`env_logger::Builder`] and apply the style definded at this crate,
+//! by using the [`format()`] function.
+//! ```
+//! use log::info;
+//! use my_env_logger_style::format;
+//!
+//! fn main() {
+//! 	env_logger::Builder::new()
+//! 		.parse_default_env()
+//! 		.format(format)
+//! 		.init();
+//! 	info!("Hello, world!");
+//! }
+//! ```
+//! # Feature-flags
+//! #### time (default)
+//! RFC3339 timestamps
 use env_logger::fmt::Formatter;
 use log::{Level, Record};
 use std::{
@@ -10,6 +41,8 @@ static MAX_MODULE_LEN: AtomicUsize = AtomicUsize::new(0);
 static SHOW_MODULE: AtomicBool = AtomicBool::new(true);
 static SHOW_EMOJIS: AtomicBool = AtomicBool::new(true);
 static SHOW_TIME: AtomicU8 = AtomicU8::new(TimestampPrecision::Seconds as u8);
+
+pub use env_logger;
 
 #[repr(u8)]
 /// RFC3339 timestamps
@@ -30,19 +63,19 @@ pub fn just_log() {
 		.init();
 }
 
-///enabale or disabel showing the module path
+///enable or disabel showing the module path
 pub fn show_module(show: bool) {
 	SHOW_MODULE.store(show, Ordering::Relaxed);
 }
 
-///enabale or disabel showing emojis before the log level
+///enable or disabel showing emojis before the log level
 pub fn show_emoji(show: bool) {
 	SHOW_EMOJIS.store(show, Ordering::Relaxed);
 }
 
-/// return the current module len.
+/// return the current module len and set the module length to the maximum of the current value and the given `len`.
 ///
-/// And set the module length to the maximum of the current value and the given `len`
+/// Usefull if you already know the length of module and would like to have an consistant indentation from the beginnig.
 pub fn get_set_max_module_len(len: usize) -> usize {
 	let module_len = MAX_MODULE_LEN.load(Ordering::Relaxed);
 	if module_len < len {
@@ -51,7 +84,7 @@ pub fn get_set_max_module_len(len: usize) -> usize {
 	module_len
 }
 
-/// set thi timestamp precision or disable timestamps complete
+/// set the timestamp precision or disable timestamps complete
 pub fn set_timestamp_precision(timestamp_precission: TimestampPrecision) {
 	SHOW_TIME.store(timestamp_precission as u8, Ordering::Relaxed);
 }
