@@ -68,13 +68,21 @@ pub enum TimestampPrecision {
 	Nanos
 }
 
+/// Create a preconfigured builder,
+/// with same configuration like [`just_log()`].
+///
+/// For an unconfigurated bulider use [`env_logger::Builder::new()`]
+pub fn builder() -> env_logger::Builder {
+	let mut builder = env_logger::Builder::new();
+	builder.filter_level(log::LevelFilter::Info) //set defaul log level
+		.parse_default_env()
+		.format(format);
+	builder
+}
+
 ///create and regstier a logger from the default environment variables
 pub fn just_log() {
-	env_logger::Builder::new()
-		.filter_level(log::LevelFilter::Info) //set defaul log level
-		.parse_default_env()
-		.format(format)
-		.init();
+	builder().init();
 }
 
 ///enable or disabel showing the module path
