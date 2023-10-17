@@ -1,4 +1,4 @@
-# my-env-logger-style ![License: MIT OR Apache-2.0](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue) [![my-env-logger-style on crates.io](https://img.shields.io/crates/v/my-env-logger-style)](https://crates.io/crates/my-env-logger-style) [![my-env-logger-style on docs.rs](https://docs.rs/my-env-logger-style/badge.svg)](https://docs.rs/my-env-logger-style) [![Source Code Repository](https://img.shields.io/badge/Code-On%20GitHub-blue?logo=GitHub)](https://github.com/LuckyTurtleDev/my-env-logger-style) ![Rust Version: none](https://img.shields.io/badge/rustc--orange.svg)
+# my-env-logger-style ![License: MIT OR Apache-2.0](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue) [![my-env-logger-style on crates.io](https://img.shields.io/crates/v/my-env-logger-style)](https://crates.io/crates/my-env-logger-style) [![my-env-logger-style on docs.rs](https://docs.rs/my-env-logger-style/badge.svg)](https://docs.rs/my-env-logger-style) [![Source Code Repository](https://img.shields.io/badge/Code-On%20GitHub-blue?logo=GitHub)](https://github.com/LuckyTurtleDev/my-env-logger-style)
 
 A pretty, opinionated style for [env_logger][__link0] inspirated by [pretty-env-logger][__link1].
 
@@ -55,7 +55,8 @@ info!("Hello, world!");
 RFC3339 timestamps
 
 
- [__cargo_doc2readme_dependencies_info]: ggGkYW0BYXSEGyDwipHVMb5RGxgd3zutc1TvG3ARKV4UcQ1NGyM1aXabIPYbYXKEG7EFv_7UCGLAG6p_0yQ4EO5pG2oTs9qOJvabG93PJiAv3uw6YWSCgmplbnZfbG9nZ2VyZjAuMTAuMINzbXktZW52LWxvZ2dlci1zdHlsZWUwLjEuMHNteV9lbnZfbG9nZ2VyX3N0eWxl
+
+ [__cargo_doc2readme_dependencies_info]: ggGkYW0BYXSEG_W_Gn_kaocAGwCcVPfenh7eGy6gYLEwyIe4G6-xw_FwcbpjYXKEG7EFv_7UCGLAG6p_0yQ4EO5pG2oTs9qOJvabG93PJiAv3uw6YWSCgmplbnZfbG9nZ2VyZjAuMTAuMINzbXktZW52LWxvZ2dlci1zdHlsZWUwLjEuMHNteV9lbnZfbG9nZ2VyX3N0eWxl
  [__link0]: https://crates.io/crates/env_logger
  [__link1]: https://crates.io/crates/pretty_env_logger
  [__link2]: https://crates.io/crates/env_logger
