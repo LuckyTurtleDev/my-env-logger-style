@@ -44,6 +44,7 @@
 //! RFC3339 timestamps
 use env_logger::fmt::Formatter;
 use log::{Level, Record};
+use regex::Regex;
 use std::{
 	io,
 	io::Write,
@@ -171,5 +172,19 @@ pub fn format(buf: &mut Formatter, record: &Record<'_>) -> io::Result<()> {
 		)?;
 	}
 
+	if let Some(mod_path) = record.module_path() {
+		if log::max_level() < Level::Debug && mod_path.starts_with("hickory") {
+			let message = format!("{}", record.args());
+			// https://ihateregex.io/expr/ip/
+			let regex_ipv4 = r"(\b25[0-5]|\b2[0-4][0-9]|\b[01]?[0-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}";
+			// https://ihateregex.io/expr/ipv6/
+			let regex_ipv6 = r"(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))";
+			let regex_domain = r"([\w\-]+\.){2,}";
+			let regex = Regex::new(&format! {"{regex_ipv4}|{regex_ipv6}|{regex_domain}"})
+				.unwrap();
+			let message = regex.replace_all(&message, "RESTRAINED");
+			return writeln!(buf, "{}", message);
+		}
+	};
 	writeln!(buf, "{}", record.args())
 }
