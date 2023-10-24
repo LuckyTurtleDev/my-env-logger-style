@@ -44,6 +44,7 @@
 //! RFC3339 timestamps
 use env_logger::fmt::Formatter;
 use log::{Level, Record};
+use once_cell::sync::OnceCell;
 use regex::Regex;
 use std::{
 	io,
@@ -56,6 +57,9 @@ static SHOW_MODULE: AtomicBool = AtomicBool::new(true);
 static SHOW_EMOJIS: AtomicBool = AtomicBool::new(true);
 #[cfg(feature = "time")]
 static SHOW_TIME: AtomicU8 = AtomicU8::new(TimestampPrecision::Seconds as u8);
+static ARG_FORMATER: OnceCell<ArgFormater> = OnceCell::new();
+type ArgFormater =
+	Box<dyn Fn(&mut Formatter, &Record<'_>) -> io::Result<()> + Send + Sync>;
 
 pub use env_logger;
 
@@ -111,6 +115,10 @@ pub fn get_set_max_module_len(len: usize) -> usize {
 /// set the timestamp precision or disable timestamps complete
 pub fn set_timestamp_precision(timestamp_precission: TimestampPrecision) {
 	SHOW_TIME.store(timestamp_precission as u8, Ordering::Relaxed);
+}
+
+pub fn set_arg_formater(forrmater: ArgFormater) -> Result<(), ()> {
+	ARG_FORMATER.set(forrmater).map_err(|_| ())
 }
 
 ///log formater witch can be used at the [`format()`](env_logger::Builder::format()) function of the [`env_logger::Builder`].
@@ -186,5 +194,9 @@ pub fn format(buf: &mut Formatter, record: &Record<'_>) -> io::Result<()> {
 			return writeln!(buf, "{}", message);
 		}
 	};
-	writeln!(buf, "{}", record.args())
+	if let Some(formater) = ARG_FORMATER.get() {
+		formater(buf, record)
+	} else {
+		writeln!(buf, "{}", record.args())
+	}
 }

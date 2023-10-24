@@ -22,6 +22,7 @@ time = ["env_logger/humantime"]
 [dependencies]
 env_logger = { version = "0.10.0", default-features = false, features = ["auto-color"] }
 log = "0.4.17"
+once_cell = { version = "1.18.0", features = ["parking_lot"] }
 regex = "1.10.2"
 
 [build-dependencies]
