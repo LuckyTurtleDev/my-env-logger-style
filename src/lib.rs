@@ -158,13 +158,13 @@ impl<F: Fn(&mut Formatter, &Record<'_>) -> io::Result<()>> ArgFormatter for F {
 /// 	writeln!(buf, "{}", record.args())
 /// }
 ///
-/// my_env_logger_style::set_arg_formater(Box::new(arg_format)).unwrap();
+/// my_env_logger_style::set_arg_formatter(Box::new(arg_format)).unwrap();
 /// ```
 #[cfg(feature = "custom-arg-formatter")]
 pub fn set_arg_formatter(
-	forrmater: Box<dyn ArgFormatter + Send + Sync>
+	forrmatter: Box<dyn ArgFormatter + Send + Sync>
 ) -> Result<(), ()> {
-	ARG_FORMATTER.set(forrmater).map_err(|_| ())
+	ARG_FORMATTER.set(forrmatter).map_err(|_| ())
 }
 
 ///log formater witch can be used at the [`format()`](env_logger::Builder::format()) function of the [`env_logger::Builder`].
