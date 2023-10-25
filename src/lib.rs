@@ -41,7 +41,7 @@
 //! ```
 //! # Feature-flags
 //! #### time (default)
-//! enable RFC3339 timestamps
+//! Enable RFC3339 timestamps
 //! #### custom-arg-formatter
 //! Allow using a custom formater to format the args (the actual message) of the log record.
 //! As example this can be used to avoid logging private userdata.
