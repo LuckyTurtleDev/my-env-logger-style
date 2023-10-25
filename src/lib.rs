@@ -41,9 +41,13 @@
 //! ```
 //! # Feature-flags
 //! #### time (default)
-//! RFC3339 timestamps
+//! enable RFC3339 timestamps
+//! #### custom-arg-formatter
+//! Allow using a custom formater to format the args (the actual message) of the log record.
+//! As example this can be used to avoid logging private userdata.
 use env_logger::fmt::Formatter;
 use log::{Level, Record};
+#[cfg(feature = "custom-arg-formater")]
 use once_cell::sync::OnceCell;
 use std::{
 	io,
@@ -56,6 +60,7 @@ static SHOW_MODULE: AtomicBool = AtomicBool::new(true);
 static SHOW_EMOJIS: AtomicBool = AtomicBool::new(true);
 #[cfg(feature = "time")]
 static SHOW_TIME: AtomicU8 = AtomicU8::new(TimestampPrecision::Seconds as u8);
+#[cfg(feature = "custom-arg-formater")]
 static ARG_FORMATER: OnceCell<Box<dyn ArgFormatter + Send + Sync>> = OnceCell::new();
 
 pub use env_logger;
@@ -124,7 +129,8 @@ impl<F: Fn(&mut Formatter, &Record<'_>) -> io::Result<()>> ArgFormatter for F {
 	}
 }
 
-/// Use a custom formater to format the args of the record.
+/// Use a custom formater to format the args (the actual message) of the record .
+/// This function can only be called once and return an Error if called a second time.
 ///
 /// This example remove the private user ipv4 loggeg by `hickory` from the log, if the loglevel is below Debug.
 /// ```
@@ -154,6 +160,7 @@ impl<F: Fn(&mut Formatter, &Record<'_>) -> io::Result<()>> ArgFormatter for F {
 ///
 /// my_env_logger_style::set_arg_formater(Box::new(arg_format)).unwrap();
 /// ```
+#[cfg(feature = "custom-arg-formater")]
 pub fn set_arg_formater(
 	forrmater: Box<dyn ArgFormatter + Send + Sync>
 ) -> Result<(), ()> {
@@ -219,9 +226,9 @@ pub fn format(buf: &mut Formatter, record: &Record<'_>) -> io::Result<()> {
 		)?;
 	}
 
+	#[cfg(feature = "custom-arg-formater")]
 	if let Some(formatter) = ARG_FORMATER.get() {
-		formatter.arg_format(buf, record)
-	} else {
-		writeln!(buf, "{}", record.args())
+		return formatter.arg_format(buf, record);
 	}
+	writeln!(buf, "{}", record.args())
 }
