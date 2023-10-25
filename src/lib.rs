@@ -134,27 +134,26 @@ impl<F: Fn(&mut Formatter, &Record<'_>) -> io::Result<()>> ArgFormatter for F {
 ///
 /// This example remove the private user ipv4 loggeg by `hickory` from the log, if the loglevel is below Debug.
 /// ```
-/// use std::io;
-/// use log::Record;
-/// use regex::Regex;
-/// use once_cell::sync::Lazy;
 /// use env_logger::fmt::Formatter;
-/// use std::io::Write;
-/// use log::Level;
+/// use log::{Level, Record};
+/// use once_cell::sync::Lazy;
+/// use regex::Regex;
+/// use std::{io, io::Write};
 ///
 /// static REGEX: Lazy<Regex> = Lazy::new(|| {
 /// 	// https://ihateregex.io/expr/ip/
-/// 	Regex::new(r"(\b25[0-5]|\b2[0-4][0-9]|\b[01]?[0-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}").unwrap()
+/// 	Regex::new(r"(\b25[0-5]|\b2[0-4][0-9]|\b[01]?[0-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}")
+/// 		.unwrap()
 /// });
 ///
-/// fn arg_format(buf: &mut Formatter, record: &Record<'_>) -> io::Result<()>{
-/// if let Some(mod_path) = record.module_path() {
-/// 	if log::max_level() < Level::Debug && mod_path.starts_with("hickory") {
-/// 		let message = format!("{}", record.args());
-/// 		let message = REGEX.replace_all(&message, "RESTRAINED");
-/// 		return writeln!(buf, "{}", message);
-/// 	}
-/// };
+/// fn arg_format(buf: &mut Formatter, record: &Record<'_>) -> io::Result<()> {
+/// 	if let Some(mod_path) = record.module_path() {
+/// 		if log::max_level() < Level::Debug && mod_path.starts_with("hickory") {
+/// 			let message = format!("{}", record.args());
+/// 			let message = REGEX.replace_all(&message, "RESTRAINED");
+/// 			return writeln!(buf, "{}", message);
+/// 		}
+/// 	};
 /// 	writeln!(buf, "{}", record.args())
 /// }
 ///
