@@ -47,7 +47,7 @@
 //! As example this can be used to avoid logging private userdata.
 use env_logger::fmt::Formatter;
 use log::{Level, Record};
-#[cfg(feature = "custom-arg-formater")]
+#[cfg(feature = "custom-arg-formatter")]
 use once_cell::sync::OnceCell;
 use std::{
 	io,
@@ -60,8 +60,8 @@ static SHOW_MODULE: AtomicBool = AtomicBool::new(true);
 static SHOW_EMOJIS: AtomicBool = AtomicBool::new(true);
 #[cfg(feature = "time")]
 static SHOW_TIME: AtomicU8 = AtomicU8::new(TimestampPrecision::Seconds as u8);
-#[cfg(feature = "custom-arg-formater")]
-static ARG_FORMATER: OnceCell<Box<dyn ArgFormatter + Send + Sync>> = OnceCell::new();
+#[cfg(feature = "custom-arg-formatter")]
+static ARG_FORMATTER: OnceCell<Box<dyn ArgFormatter + Send + Sync>> = OnceCell::new();
 
 pub use env_logger;
 
@@ -160,11 +160,11 @@ impl<F: Fn(&mut Formatter, &Record<'_>) -> io::Result<()>> ArgFormatter for F {
 ///
 /// my_env_logger_style::set_arg_formater(Box::new(arg_format)).unwrap();
 /// ```
-#[cfg(feature = "custom-arg-formater")]
-pub fn set_arg_formater(
+#[cfg(feature = "custom-arg-formatter")]
+pub fn set_arg_formatter(
 	forrmater: Box<dyn ArgFormatter + Send + Sync>
 ) -> Result<(), ()> {
-	ARG_FORMATER.set(forrmater).map_err(|_| ())
+	ARG_FORMATTER.set(forrmater).map_err(|_| ())
 }
 
 ///log formater witch can be used at the [`format()`](env_logger::Builder::format()) function of the [`env_logger::Builder`].
@@ -226,8 +226,8 @@ pub fn format(buf: &mut Formatter, record: &Record<'_>) -> io::Result<()> {
 		)?;
 	}
 
-	#[cfg(feature = "custom-arg-formater")]
-	if let Some(formatter) = ARG_FORMATER.get() {
+	#[cfg(feature = "custom-arg-formatter")]
+	if let Some(formatter) = ARG_FORMATTER.get() {
 		return formatter.arg_format(buf, record);
 	}
 	writeln!(buf, "{}", record.args())

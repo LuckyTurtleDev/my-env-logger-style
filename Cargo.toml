@@ -18,7 +18,7 @@ include = [
 [features]
 default = ["time"]
 time = ["env_logger/humantime"]
-custom-arg-formater = ["dep:once_cell"]
+custom-arg-formatter = ["dep:once_cell"]
 
 [dependencies]
 env_logger = { version = "0.10.0", default-features = false, features = ["auto-color"] }
