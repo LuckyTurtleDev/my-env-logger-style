@@ -52,11 +52,16 @@ info!("Hello, world!");
 
 ##### time (default)
 
-RFC3339 timestamps
+Enable RFC3339 timestamps
+
+
+##### custom-arg-formatter
+
+Allow using a custom formater to format the args (the actual message) of the log record. As example this can be used to avoid logging private userdata.
 
 
 
- [__cargo_doc2readme_dependencies_info]: ggGkYW0BYXSEG_W_Gn_kaocAGwCcVPfenh7eGy6gYLEwyIe4G6-xw_FwcbpjYXKEG7EFv_7UCGLAG6p_0yQ4EO5pG2oTs9qOJvabG93PJiAv3uw6YWSCgmplbnZfbG9nZ2VyZjAuMTAuMINzbXktZW52LWxvZ2dlci1zdHlsZWUwLjEuMHNteV9lbnZfbG9nZ2VyX3N0eWxl
+ [__cargo_doc2readme_dependencies_info]: ggGkYW0BYXSEG_W_Gn_kaocAGwCcVPfenh7eGy6gYLEwyIe4G6-xw_FwcbpjYXKEG7Vk-MZ5Y-OPG3Gyn8-t-rjgGyewtMniif7nG-E9Audz2fu_YWSCgmplbnZfbG9nZ2VyZjAuMTAuMINzbXktZW52LWxvZ2dlci1zdHlsZWUwLjEuMHNteV9lbnZfbG9nZ2VyX3N0eWxl
  [__link0]: https://crates.io/crates/env_logger
  [__link1]: https://crates.io/crates/pretty_env_logger
  [__link2]: https://crates.io/crates/env_logger

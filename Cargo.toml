@@ -18,10 +18,15 @@ include = [
 [features]
 default = ["time"]
 time = ["env_logger/humantime"]
+custom-arg-formatter = ["dep:once_cell"]
 
 [dependencies]
 env_logger = { version = "0.10.0", default-features = false, features = ["auto-color"] }
 log = "0.4.17"
+once_cell = { version = "1.18.0", features = ["parking_lot"] , optional = true}
+
+[dev-dependencies]
+regex = "1.10.2"
 
 [build-dependencies]
 rustc_version = "0.4.0"

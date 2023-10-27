@@ -41,9 +41,14 @@
 //! ```
 //! # Feature-flags
 //! #### time (default)
-//! RFC3339 timestamps
+//! Enable RFC3339 timestamps
+//! #### custom-arg-formatter
+//! Allow using a custom formater to format the args (the actual message) of the log record.
+//! As example this can be used to avoid logging private userdata.
 use env_logger::fmt::Formatter;
 use log::{Level, Record};
+#[cfg(feature = "custom-arg-formatter")]
+use once_cell::sync::OnceCell;
 use std::{
 	io,
 	io::Write,
@@ -55,6 +60,8 @@ static SHOW_MODULE: AtomicBool = AtomicBool::new(true);
 static SHOW_EMOJIS: AtomicBool = AtomicBool::new(true);
 #[cfg(feature = "time")]
 static SHOW_TIME: AtomicU8 = AtomicU8::new(TimestampPrecision::Seconds as u8);
+#[cfg(feature = "custom-arg-formatter")]
+static ARG_FORMATTER: OnceCell<Box<dyn ArgFormatter + Send + Sync>> = OnceCell::new();
 
 pub use env_logger;
 
@@ -110,6 +117,53 @@ pub fn get_set_max_module_len(len: usize) -> usize {
 /// set the timestamp precision or disable timestamps complete
 pub fn set_timestamp_precision(timestamp_precission: TimestampPrecision) {
 	SHOW_TIME.store(timestamp_precission as u8, Ordering::Relaxed);
+}
+
+pub trait ArgFormatter {
+	fn arg_format(&self, buf: &mut Formatter, record: &Record<'_>) -> io::Result<()>;
+}
+
+impl<F: Fn(&mut Formatter, &Record<'_>) -> io::Result<()>> ArgFormatter for F {
+	fn arg_format(&self, buf: &mut Formatter, record: &Record<'_>) -> io::Result<()> {
+		self(buf, record)
+	}
+}
+
+/// Use a custom formater to format the args (the actual message) of the record .
+/// This function can only be called once and return an Error if called a second time.
+///
+/// This example remove the private user ipv4 loggeg by `hickory` from the log, if the loglevel is below Debug.
+/// ```
+/// use env_logger::fmt::Formatter;
+/// use log::{Level, Record};
+/// use once_cell::sync::Lazy;
+/// use regex::Regex;
+/// use std::{io, io::Write};
+///
+/// static REGEX: Lazy<Regex> = Lazy::new(|| {
+/// 	// https://ihateregex.io/expr/ip/
+/// 	Regex::new(r"(\b25[0-5]|\b2[0-4][0-9]|\b[01]?[0-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}")
+/// 		.unwrap()
+/// });
+///
+/// fn arg_format(buf: &mut Formatter, record: &Record<'_>) -> io::Result<()> {
+/// 	if let Some(mod_path) = record.module_path() {
+/// 		if log::max_level() < Level::Debug && mod_path.starts_with("hickory") {
+/// 			let message = format!("{}", record.args());
+/// 			let message = REGEX.replace_all(&message, "RESTRAINED");
+/// 			return writeln!(buf, "{}", message);
+/// 		}
+/// 	};
+/// 	writeln!(buf, "{}", record.args())
+/// }
+///
+/// my_env_logger_style::set_arg_formatter(Box::new(arg_format)).unwrap();
+/// ```
+#[cfg(feature = "custom-arg-formatter")]
+pub fn set_arg_formatter(
+	forrmatter: Box<dyn ArgFormatter + Send + Sync>
+) -> Result<(), ()> {
+	ARG_FORMATTER.set(forrmatter).map_err(|_| ())
 }
 
 ///log formater witch can be used at the [`format()`](env_logger::Builder::format()) function of the [`env_logger::Builder`].
@@ -171,5 +225,9 @@ pub fn format(buf: &mut Formatter, record: &Record<'_>) -> io::Result<()> {
 		)?;
 	}
 
+	#[cfg(feature = "custom-arg-formatter")]
+	if let Some(formatter) = ARG_FORMATTER.get() {
+		return formatter.arg_format(buf, record);
+	}
 	writeln!(buf, "{}", record.args())
 }
