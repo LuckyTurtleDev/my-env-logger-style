@@ -1,6 +1,6 @@
 [package]
 name = "my-env-logger-style"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 description = "pretty, opinionated style for env_logger"
 repository = "https://github.com/LuckyTurtleDev/my-env-logger-style"
