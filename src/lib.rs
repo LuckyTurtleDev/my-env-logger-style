@@ -45,6 +45,7 @@
 //! #### custom-arg-formatter
 //! Allow using a custom formater to format the args (the actual message) of the log record.
 //! As example this can be used to avoid logging private userdata.
+use anstyle::Style;
 use env_logger::fmt::Formatter;
 use log::{Level, Record};
 #[cfg(feature = "custom-arg-formatter")]
@@ -168,10 +169,8 @@ pub fn set_arg_formatter(
 
 ///log formater witch can be used at the [`format()`](env_logger::Builder::format()) function of the [`env_logger::Builder`].
 pub fn format(buf: &mut Formatter, record: &Record<'_>) -> io::Result<()> {
-	let mut bold = buf.style();
-	bold.set_bold(true);
-	let mut dimmed = buf.style();
-	dimmed.set_dimmed(true);
+	let bold = Style::new().bold();
+	let dimmed = Style::new().dimmed();
 
 	#[cfg(feature = "time")]
 	{
@@ -181,16 +180,16 @@ pub fn format(buf: &mut Formatter, record: &Record<'_>) -> io::Result<()> {
 		match unsafe { std::mem::transmute(show_time) } {
 			TimestampPrecision::Disable => Ok(()),
 			TimestampPrecision::Seconds => {
-				write!(buf, "{} ", dimmed.value(buf.timestamp_seconds()))
+				write!(buf, "{dimmed}{}{dimmed:#} ", buf.timestamp_seconds())
 			},
 			TimestampPrecision::Millis => {
-				write!(buf, "{} ", dimmed.value(buf.timestamp_seconds()))
+				write!(buf, "{dimmed}{}{dimmed:#} ", buf.timestamp_millis())
 			},
 			TimestampPrecision::Micros => {
-				write!(buf, "{} ", dimmed.value(buf.timestamp_seconds()))
+				write!(buf, "{dimmed}{}{dimmed:#} ", buf.timestamp_micros())
 			},
 			TimestampPrecision::Nanos => {
-				write!(buf, "{} ", dimmed.value(buf.timestamp_seconds()))
+				write!(buf, "{dimmed}{}{dimmed:#} ", buf.timestamp_nanos())
 			}
 		}?;
 	}
@@ -210,8 +209,8 @@ pub fn format(buf: &mut Formatter, record: &Record<'_>) -> io::Result<()> {
 	};
 	write!(
 		buf,
-		"{level_symbol} {:5} ",
-		level_style.value(record.level())
+		"{level_symbol} {level_style}{:5}{level_style:#} ",
+		record.level()
 	)?;
 
 	if SHOW_MODULE.load(Ordering::Relaxed) {
@@ -219,9 +218,7 @@ pub fn format(buf: &mut Formatter, record: &Record<'_>) -> io::Result<()> {
 		let module_len = get_set_max_module_len(module.len());
 		write!(
 			buf,
-			"{:module_len$} {} ",
-			dimmed.value(module),
-			bold.value('>')
+			"{dimmed}{module:module_len$}{dimmed:#} {bold}>{bold:#} "
 		)?;
 	}
 
