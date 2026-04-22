@@ -1,7 +1,7 @@
 #![allow(clippy::tabs_in_doc_comments)]
 #![warn(rust_2018_idioms, unreachable_pub)]
 #![forbid(elided_lifetimes_in_paths)]
-#![cfg_attr(all(doc, nightly), feature(doc_auto_cfg))]
+#![cfg_attr(all(doc, nightly), feature(doc_cfg))]
 
 //! A pretty, opinionated style for [env_logger](https://crates.io/crates/env_logger) inspirated by [pretty-env-logger](https://crates.io/crates/pretty_env_logger).
 //!
