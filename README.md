@@ -2,25 +2,23 @@
 
 A pretty, opinionated style for [env_logger][__link0] inspirated by [pretty-env-logger][__link1].
 
-It is not a goal of this crate to create a feature rich wrapper around [env_logger][__link2]. Instead it does provide a formater, which can be applied to the [`env_logger::Builder`][__link3]. Additional an optional [function][__link4] to create and register a zero config logger is provided.
+It is not a goal of this crate to create a feature rich wrapper around [env_logger][__link2].
+Instead it does provide a formater, which can be applied to the [`env_logger::Builder`][__link3].
+Additional an optional [function][__link4] to create and register a zero config logger is provided.
 
 Timestamp, emojis and modules can be disable separately.
 
-
 ## Preview
 
-![image][__link5]
+![image](https://user-images.githubusercontent.com/44570204/236641121-5071e42a-9f9b-4bff-a6fb-03ff294f5d9e.png)
 
 with timestamps:
 
-![image][__link6]
-
+![image](https://user-images.githubusercontent.com/44570204/236641172-fb304d1f-7e50-4283-969e-949a76b0ba00.png)
 
 ## Usage
 
-
 ##### Quickstart
-
 
 ```rust
 my_env_logger_style::just_log();
@@ -29,11 +27,10 @@ info!("Hello, world!");
 
 This creates the default env_logger from environment variables and register it as logger.
 
-
 ##### Advance
 
-You can also create an [`env_logger::Builder`][__link7] and apply the style definded at this crate, by using the [`format()`][__link8] function.
-
+You can also create an [`env_logger::Builder`][__link5] and apply the style definded at this crate,
+by using the [`format()`][__link6] function.
 
 ```rust
 use log::info;
@@ -46,28 +43,23 @@ env_logger::Builder::new()
 info!("Hello, world!");
 ```
 
-
 ## Feature-flags
-
 
 ##### time (default)
 
 Enable RFC3339 timestamps
 
-
 ##### custom-arg-formatter
 
-Allow using a custom formater to format the args (the actual message) of the log record. As example this can be used to avoid logging private userdata.
+Allow using a custom formater to format the args (the actual message) of the log record.
+As example this can be used to avoid logging private userdata.
 
 
-
- [__cargo_doc2readme_dependencies_info]: ggGkYW0BYXSEG_W_Gn_kaocAGwCcVPfenh7eGy6gYLEwyIe4G6-xw_FwcbpjYXKEG7Vk-MZ5Y-OPG3Gyn8-t-rjgGyewtMniif7nG-E9Audz2fu_YWSCgmplbnZfbG9nZ2VyZjAuMTEuM4NzbXktZW52LWxvZ2dlci1zdHlsZWUwLjIuMHNteV9lbnZfbG9nZ2VyX3N0eWxl
+ [__cargo_doc2readme_dependencies_info]: ggGmYW0CYXZlMC43LjJhdIQb2o_SNWoR6AAb3_T-k0ODPHwbnQW7uS_D2XsbjVFFtK-lC3BhYvVhcoQbtWT4xnlj448bcbKfz636uOAbJ7C0yeKJ_ucb4T0C53PZ-79hZIKCamVudl9sb2dnZXJnMC4xMS4xMINzbXktZW52LWxvZ2dlci1zdHlsZWUwLjIuMHNteV9lbnZfbG9nZ2VyX3N0eWxl
  [__link0]: https://crates.io/crates/env_logger
  [__link1]: https://crates.io/crates/pretty_env_logger
  [__link2]: https://crates.io/crates/env_logger
- [__link3]: https://docs.rs/env_logger/0.11.3/env_logger/?search=Builder
- [__link4]: https://docs.rs/my-env-logger-style/0.2.0/my_env_logger_style/?search=just_log
- [__link5]: https://user-images.githubusercontent.com/44570204/236641121-5071e42a-9f9b-4bff-a6fb-03ff294f5d9e.png
- [__link6]: https://user-images.githubusercontent.com/44570204/236641172-fb304d1f-7e50-4283-969e-949a76b0ba00.png
- [__link7]: https://docs.rs/env_logger/0.11.3/env_logger/?search=Builder
- [__link8]: https://docs.rs/my-env-logger-style/0.2.0/my_env_logger_style/?search=format
+ [__link3]: https://docs.rs/env_logger/0.11.10/env_logger/?search=Builder
+ [__link4]: https://docs.rs/my-env-logger-style/0.2.0/my_env_logger_style/fn.just_log.html
+ [__link5]: https://docs.rs/env_logger/0.11.10/env_logger/?search=Builder
+ [__link6]: https://docs.rs/my-env-logger-style/0.2.0/my_env_logger_style/fn.format.html
