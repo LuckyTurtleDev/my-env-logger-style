@@ -55,11 +55,11 @@ Allow using a custom formater to format the args (the actual message) of the log
 As example this can be used to avoid logging private userdata.
 
 
- [__cargo_doc2readme_dependencies_info]: ggGmYW0CYXZlMC43LjJhdIQb2o_SNWoR6AAb3_T-k0ODPHwbnQW7uS_D2XsbjVFFtK-lC3BhYvVhcoQbtWT4xnlj448bcbKfz636uOAbJ7C0yeKJ_ucb4T0C53PZ-79hZIKCamVudl9sb2dnZXJnMC4xMS4xMINzbXktZW52LWxvZ2dlci1zdHlsZWUwLjIuMHNteV9lbnZfbG9nZ2VyX3N0eWxl
+ [__cargo_doc2readme_dependencies_info]: ggGmYW0CYXZlMC43LjJhdIQb2o_SNWoR6AAb3_T-k0ODPHwbnQW7uS_D2XsbjVFFtK-lC3BhYvVhcoQbtWT4xnlj448bcbKfz636uOAbJ7C0yeKJ_ucb4T0C53PZ-79hZIKCamVudl9sb2dnZXJnMC4xMS4xMINzbXktZW52LWxvZ2dlci1zdHlsZWUwLjIuMXNteV9lbnZfbG9nZ2VyX3N0eWxl
  [__link0]: https://crates.io/crates/env_logger
  [__link1]: https://crates.io/crates/pretty_env_logger
  [__link2]: https://crates.io/crates/env_logger
  [__link3]: https://docs.rs/env_logger/0.11.10/env_logger/?search=Builder
- [__link4]: https://docs.rs/my-env-logger-style/0.2.0/my_env_logger_style/fn.just_log.html
+ [__link4]: https://docs.rs/my-env-logger-style/0.2.1/my_env_logger_style/fn.just_log.html
  [__link5]: https://docs.rs/env_logger/0.11.10/env_logger/?search=Builder
- [__link6]: https://docs.rs/my-env-logger-style/0.2.0/my_env_logger_style/fn.format.html
+ [__link6]: https://docs.rs/my-env-logger-style/0.2.1/my_env_logger_style/fn.format.html
